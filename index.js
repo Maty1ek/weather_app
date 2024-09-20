@@ -1,39 +1,37 @@
-const cityName = document.querySelector('.city')
-const wind = document.querySelector('.wind')
-const humidity = document.querySelector('.humidity')
+const weather = document.querySelector('.weather')
 const temp = document.querySelector('.temp')
-const weather_icon = document.querySelector('.weather_icon')
+const humidity = document.querySelector('.humidity')
+const wind = document.querySelector('.wind')
+const cityName = document.querySelector('.city')
 const searchInput = document.querySelector('#searchInput')
-const mainWeatherCon = document.querySelector('.weather')
 const errorCon = document.querySelector('.error')
+const weatherIcon = document.querySelector('.weather_icon')
 
 const apiKey = '3cc390baec9352133f13fa603d693664'
 const apiURL = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q='
 
-async function checkWeather(city) {
-    const response = await fetch(apiURL + city + `&appid=${apiKey}`)
-    
-    if(!response.ok) {
-        errorCon.style = 'display: block;'
-        mainWeatherCon.style.display = 'none'
-    } else {
-        let data = await response.json()    
-    
-        cityName.innerHTML = data.name
-        temp.innerHTML = `${Math.round(data.main.temp)}&#176;C`
-        wind.innerHTML = `${Math.round(data.wind.speed)} km/h`
-        humidity.innerHTML = `${data.main.humidity} %`
-        weather_icon.src = `images/${data.weather[0].main.toLowerCase()}.png`    
-    
-        mainWeatherCon.style.display = 'block'
-        errorCon.style = 'display: none;'
+async function weatherFunc(city) {
+    const res = await fetch(apiURL + `${city}&appid=${apiKey}`)
 
+    if (!res.ok) {
+        errorCon.style.display = 'block'
+        weather.style.display = 'none'
+    } else {
+        const data = await res.json()
+    
+        temp.innerHTML = `${Math.round(data.main.temp)}&#176;C`
+        wind.innerHTML = `${data.wind.speed} km/h`
+        cityName.innerHTML = data.name
+        humidity.innerHTML = `${data.main.humidity}%`
+        weatherIcon.src = `images/${data.weather[0].main.toLowerCase()}.png`
+    
+        weather.style.display = 'block'
+        errorCon.style.display = 'none'
+        console.log(res, data);
     }
 
 }
 
 searchInput.addEventListener('change', () => {
-    checkWeather(`${searchInput.value}`)
+    weatherFunc(searchInput.value)
 })
-
-
