@@ -18,8 +18,8 @@ There will be my personal notes and code explanation. So if you are reading this
 <!-- 1 -->
 **First, create 2 variables. in 1 of them we will save our api key, in another a link to get data about weather**
 
-## const apiKey = '3cc390baec9352133f13fa603d69366'
-## const apiURL = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q=astana'
+ const apiKey = '3cc390baec9352133f13fa603d69366'
+ const apiURL = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q=astana'
 
 *API key is a unique key generated specially for you. Thanks to that, the server will know who are usind and many are using it*
 
@@ -33,16 +33,16 @@ There will be my personal notes and code explanation. So if you are reading this
 <!-- 2 -->
 **Create an async function to request weather data**
 
-# async function checkWeather() {
-#     const response = await fetch(apiURL + `&appid=${apiKey}`)
-# }
+ async function checkWeather() {
+     const response = await fetch(apiURL + `&appid=${apiKey}`)
+ }
 
 *Async functions are used when we want our code to run despite async function hasnt finished doing his job. In this case, if we want to request data from API DB, but dont wait until it comes, we use async functions*
 
 *In short, async function is a type of function, that tells us that the function has operations, that can take some time (like data request from the internet), but it wont block another code's work*
 
 <!-- line itself -->
-# const response = await fetch(apiURL + `&appid=${apiKey}`)
+ const response = await fetch(apiURL + `&appid=${apiKey}`)
 
 *We use await in the async functions to say "wait here, before going further, before completing next line in this function". So we use them if a proccess can take some time. Requesting data from server needs time.*
 
@@ -52,7 +52,7 @@ There will be my personal notes and code explanation. So if you are reading this
 <!-- 3 -->
 **Unpack the data from the server by using .json()**
 
-# let data = await response.json()
+ let data = await response.json()
 
 *After we get the data from a server by using fetch(), we get an object called Response. The data we get from the server comes us in a specific format (JSON for example). The function fetch() makes a request and helps us to get that data. When fetch() recieves it, the function adds specific properties in that response object, and one of them is a property called .json()*
 
@@ -61,18 +61,18 @@ There will be my personal notes and code explanation. So if you are reading this
 *Function fetch just trsansforms into an object "response". Method .json() is a part of an object 'response' and provided by function fetch(), not by server.*
 
 <!-- Full code -->
-# async function checkWeather() {
-#     const response = await fetch(apiURL + `&appid=${apiKey}`)
-#     let data = await response.json()    
-# }
+ async function checkWeather() {
+     const response = await fetch(apiURL + `&appid=${apiKey}`)
+     let data = await response.json()    
+ }
 
 <!-- Just mistakes -->
 **Mistakes I did**
 
-# const response = fetch(apiURL + `&appid=${apiKey}`)
-# let data = response.json()
+ const response = fetch(apiURL + `&appid=${apiKey}`)
+ let data = response.json()
 
-# console.log(response, data);
+ console.log(response, data);
 
 *When we use fetch(), we wait a response from a sever, which takes some time. Therefore, before we recieve the response, the fetch() function returns a "Promise". Since "Promise" doesn't have any .json() method, console returns an error, because our variable 'response' doesn't have any 'json() methods*
 
@@ -85,23 +85,23 @@ There will be my personal notes and code explanation. So if you are reading this
 **Get all the DOM elements from html page and set the data in that elements**
 
 <!-- set city name -->
-# cityName.innerHTML = data.name 
+ cityName.innerHTML = data.name 
 <!-- set temp -->
-# temp.innerHTML = `${Math.round(data.main.temp)}&#176;C`
+ temp.innerHTML = `${Math.round(data.main.temp)}&#176;C`
 <!-- set wind speed -->
-# wind.innerHTML = `${Math.round(data.wind.speed)} km/h`
+ wind.innerHTML = `${Math.round(data.wind.speed)} km/h`
 <!-- set humidity per cent -->
-# humidity.innerHTML = `${data.main.humidity} %`
+ humidity.innerHTML = `${data.main.humidity} %`
 <!-- set weather icon -->
-# weather_icon.src = `images/${data.weather[0].main.toLowerCase()}.png` 
+ weather_icon.src = `images/${data.weather[0].main.toLowerCase()}.png` 
 
 
 <!-- 5 -->
 **Add event listener to the input**
 
-# searchInput.addEventListener('change', () => {
-#     checkWeather(`${searchInput.value}`)
-# })
+ searchInput.addEventListener('change', () => {
+     checkWeather(`${searchInput.value}`)
+ })
 
 *Here we are adding an event listener to the input. WHen the input gets changed, we call the async function to show all of the data in our app*
 
@@ -109,10 +109,10 @@ There will be my personal notes and code explanation. So if you are reading this
 <!-- 6 -->
 **Add an error handler**
 
-# if(!response.ok) {
-#     errorCon.style = 'display: block;'
-#     mainWeatherCon.style.display = 'none'
-# }
+ if(!response.ok) {
+     errorCon.style = 'display: block;'
+     mainWeatherCon.style.display = 'none'
+ }
 
 *If we wont get response from the server, the property of our response object called "ok" will return false, but if we get the data properly and ther is no any errors, it will return true.*
 
